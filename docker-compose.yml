@@ -1,0 +1,37 @@
+version: "3"
+services:
+  scenario-runner:
+    #image: carla-client:learn
+    image: scenario-runner:latest
+    container_name: scenario-runner
+    build: .
+    volumes:
+      - ./:/scenario_runner
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    environment: 
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    command: tail -F anything
+
+#export PYTHONPATH=$PYTHONPATH:${CARLA_ROOT}/PythonAPI/carla/dist/carla-0.9.13-py3.8-linux-x86_64.egg
+#PYTHONPATH=$PYTHONPATH:${CARLA_ROOT}/PythonAPI/carla
+#export CARLA_ROOT=/carla/
+#export SCENARIO_RUNNER_ROOT=/scenario_runner/
+
+# sudo docker run --privileged --gpus all --net=host -e DISPLAY=$DISPLAY carlasim/carla:0.9.12 /bin/bash ./CarlaUE4.sh
+  carla-server:
+    #image: carla-client:learn
+    image: carlasim/carla:0.9.13
+    container_name: carla-server
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu,compute,utility,graphics,display]
+
