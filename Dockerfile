@@ -52,5 +52,6 @@ RUN python3 -m pip install --upgrade Pillow
 RUN pip3 install --user -r requirements.txt
 RUN apt-get update && apt-get install -y xauth
 RUN touch /root/.Xauthority
+RUN apt install -y firefox
 CMD ["ls" ]
 

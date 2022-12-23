@@ -6,7 +6,7 @@ services:
     container_name: scenario-runner
     build: .
     volumes:
-      - ./:/scenario_runner
+      - ./:/app/scenario_runner
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     environment: 
       - DISPLAY=${DISPLAY}
