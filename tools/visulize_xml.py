@@ -28,7 +28,7 @@ for event in ManeuverNode:
         c.attr(color='blue')
         c.node_attr.update(style='filled', color='gray')
         consitionTag = event.findall('.//StartTrigger/ConditionGroup/Condition')
-        
+        c.attr(label=event_name)
         for tags in event:
             if tags.tag == 'Action':
                 c.node(tags.get('name'))
@@ -36,3 +36,19 @@ for event in ManeuverNode:
                 currentNode = tags.get('name')
     i+=1
 f.view()
+
+i=0
+storyLevelGraph = graphviz.Digraph('story_graph', filename='fsm.gv')
+ManeuverNode = ManeuverGroupNode.findall('./Maneuver')
+storyNode = storyBoardNode.findall('./Story')
+for s in storyNode:
+    storyLevelGraph.attr(label=s.get('name'))
+    storyLevelGraph.attr(color='blue')
+    with storyLevelGraph.subgraph(name='cluster_'+str(i)) as actGraph:
+        for tags in s:
+            if tags.tag == 'Act':
+                print(tags)
+                actGraph.attr(color='green')
+                actGraph.attr(label=tags.get('name'))
+                actGraph.node('myNode')
+storyLevelGraph.view()
